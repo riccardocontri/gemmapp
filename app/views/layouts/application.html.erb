@@ -1,14 +1,13 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-  <title>Gemmapp</title>
+  <title>Gemmapp - <%= @page_name %></title>
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
-
+  <%= yield %>
 </body>
 </html>
