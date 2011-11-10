@@ -14,4 +14,5 @@ group :test do
   #gem 'autotest-rails-pure' #, '4.1.2'
   #gem 'ZenTest'
   #gem 'redgreen'
+  gem 'spork' #, '0.9.0.rc8'
 end
