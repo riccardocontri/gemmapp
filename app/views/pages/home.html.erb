@@ -1,26 +1,15 @@
-<div id="page">
+<div id="page" class="main_page">
   <div id="content">
-	<div id="header">
-	  <h1>Benvenuti in Gemmapp</h1>
-	  <h2></h2>
-	</div>
+    <div id="header">
+      <h1>Benvenuti in Gemmapp</h1>
+      <h2></h2>
+    </div>
 
-	<div id="getting-started">
-	  <h1>Per cominciare</h1>
-	  <h2></h2>
-
-	  <ol>
-		<li>
-		  <h2>Iscriviti</h2>
-		  <p>Entra a far parte di Gemmapp</p>
-		</li>
-
-		<li>
-		  <h2>Accedi</h2>
-		  <p>Ritorna in Gemmapp</p>
-		</li>
-	  </ol>
-	</div>
+    <div id="getting-started">
+      <h3>Per cominciare</h3>
+      <p>Se sei già registrato, puoi <%= link_to "accedere", '#', :class => "round" %>. Altrimenti</p>
+      <%= link_to "Iscriviti!", '#', :class => "signup_button round" %>
+    </div>
   </div>
 
   <div id="footer">&nbsp;</div>
