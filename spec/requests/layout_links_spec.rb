@@ -23,4 +23,11 @@ describe "LayoutLinks" do
     end
   end
 
+  describe "GET 'join'" do
+    it "Should open the New user page" do
+      get "/join"
+      response.should have_selector("title", :content => "Join")
+    end
+  end
+
 end

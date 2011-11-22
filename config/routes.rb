@@ -1,4 +1,7 @@
 Gemmapp::Application.routes.draw do
+  #get "users/new"
+  match '/join', :to => 'users#new'
+
   # get "pages/home"
 
   # get "pages/about"
