@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe "LayoutLinks" do
 
+  it "Should have valid links" do
+    visit root_path
+
+    click_link "about"
+    response.should have_selector("title", :content => "About")
+
+    click_link "contatti"
+    response.should have_selector("title", :content => "Contacts")
+
+    click_link "Home"
+    response.should have_selector("title", :content => "Home")
+  end
+
   describe "GET '/'" do
     it "Should open the Home page" do
       get "/"
