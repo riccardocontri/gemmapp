@@ -11,6 +11,8 @@
 #  updated_at :datetime
 #
 
+require 'digest'
+
 EMAIL_VALIDATION_TEMPLATE = /^[\w.+-]+@[a-z\d.-]+\.[a-z]{2,4}$/i
 MAXIMUM_LENGTH_FOR_NAMES = 64
 MINIMUM_LENGTH_FOR_PASSWORD = 8
@@ -45,15 +47,26 @@ class User < ActiveRecord::Base
 
     # Checks if the submitted password matches the stored password.
     def has_password?(submitted_password)
+        puts "encrypted_password: #{encrypted_password}"
+        puts "submitted_password: #{submitted_password}"
         encrypted_password == encrypt(submitted_password)
     end
 
     private
         def encrypt_password
+            self.salt = make_salt unless has_password?(password)
             self.encrypted_password = encrypt(password)
         end
 
+        def make_salt
+            secure_hash("#{Time.now.utc}--#{password}")
+        end
+
         def encrypt(text)
-            text.reverse #TODO Replace with real encryption
+            secure_hash("#{salt}--#{text}")
+        end
+
+        def secure_hash(text)
+            Digest::SHA2.hexdigest(text)
         end
 end

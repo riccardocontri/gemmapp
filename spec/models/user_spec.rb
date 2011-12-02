@@ -142,17 +142,11 @@ describe User do
         end
 
         describe "password checking" do
-            it "should return true if submitted password matches stored one" do
-                #~ password = "1234Abcd"
-                #~ attrs = @user_attrs.merge(
-                    #~ :password => password,
-                    #~ :password_confirmation => password)
-                #~ @user = User.create!(attrs)
-
+            it "should be true if submitted password matches stored one" do
                 @user.has_password?(@user_attrs[:password]).should be_true
             end
 
-            it "should return false if submitted password doesn't match stored one" do
+            it "should be false if submitted password doesn't match stored one" do
                 @user.has_password?(@user_attrs[:password].reverse).should be_false
             end
         end
