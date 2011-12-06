@@ -82,6 +82,60 @@ describe User do
         invalid_user.should_not be_valid, "A nickname of #{invalid_nickname.length} characters should be rejected"
     end
 
+    it "should accept valid emails" do
+        valid_emails =
+        [
+            "username@domain.org",
+            "user.name@domain.org",
+            "user_name@domain.org",
+            "user-name@domain.org",
+            "username@another-domain.org",
+            "username@domain.co.uk"
+        ]
+        valid_emails.each do |valid_email|
+            user = User.new(@user_attrs.merge(:email => valid_email))
+            user.should be_valid, "email '#{valid_email}' should be accepted"
+        end
+    end
+
+    it "should reject invalid emails" do
+        invalid_emails =
+        [
+            "",
+            "username@domain",
+            "user/name@domain.org",
+            "user@name@domain.org",
+            "username@domain_org",
+            "usernameATdomain.org"
+        ]
+        invalid_emails.each do |invalid_email|
+            user = User.new(@user_attrs.merge(:email => invalid_email))
+            user.should_not be_valid, "email '#{invalid_email}' should NOT be accepted"
+        end
+    end
+
+    it "should have unique email" do
+        same_email = "user@domain.com"
+
+        first_user = User.new(@user_attrs.merge(:name => "First", :email => same_email))
+        first_user.should be_valid
+        first_user.save
+
+        second_user = User.new(@user_attrs.merge(:name => "Second", :email => same_email))
+        second_user.should_not be_valid
+    end
+
+    it "should reject emails only differing by case" do
+        same_email = "user@domain.com"
+
+        first_user = User.new(@user_attrs.merge(:name => "First", :email => same_email.downcase))
+        first_user.should be_valid
+        first_user.save
+
+        second_user = User.new(@user_attrs.merge(:name => "Second", :email => same_email.upcase))
+        second_user.should_not be_valid
+    end
+
     it "should reject a blank password" do
         attrs = @user_attrs.merge(:password => "", :password_confirmation => "")
         user = User.new(attrs)
@@ -152,57 +206,27 @@ describe User do
         end
     end
 
-    it "should accept valid emails" do
-        valid_emails =
-        [
-            "username@domain.org",
-            "user.name@domain.org",
-            "user_name@domain.org",
-            "user-name@domain.org",
-            "username@another-domain.org",
-            "username@domain.co.uk"
-        ]
-        valid_emails.each do |valid_email|
-            user = User.new(@user_attrs.merge(:email => valid_email))
-            user.should be_valid, "email '#{valid_email}' should be accepted"
+    describe "authentication" do
+        before(:each) do
+            @user = User.create!(@user_attrs)
         end
-    end
 
-    it "should reject invalid emails" do
-        invalid_emails =
-        [
-            "",
-            "username@domain",
-            "user/name@domain.org",
-            "user@name@domain.org",
-            "username@domain_org",
-            "usernameATdomain.org"
-        ]
-        invalid_emails.each do |invalid_email|
-            user = User.new(@user_attrs.merge(:email => invalid_email))
-            user.should_not be_valid, "email '#{invalid_email}' should NOT be accepted"
+        it "should fail with unknown email" do
+            authenticated_user = User.authenticate("unknown@email.com", "any password")
+
+            authenticated_user.should be_nil
         end
-    end
 
-    it "should have unique email" do
-        same_email = "user@domain.com"
+        it "should fail with email password mismatch" do
+            authenticated_user = User.authenticate(@user.email, "wrong password")
 
-        first_user = User.new(@user_attrs.merge(:name => "First", :email => same_email))
-        first_user.should be_valid
-        first_user.save
+            authenticated_user.should be_nil
+        end
 
-        second_user = User.new(@user_attrs.merge(:name => "Second", :email => same_email))
-        second_user.should_not be_valid
-    end
+        it "should succeed with matching email and password" do
+            authenticated_user = User.authenticate(@user.email, @user.password)
 
-    it "should reject emails only differing by case" do
-        same_email = "user@domain.com"
-
-        first_user = User.new(@user_attrs.merge(:name => "First", :email => same_email.downcase))
-        first_user.should be_valid
-        first_user.save
-
-        second_user = User.new(@user_attrs.merge(:name => "Second", :email => same_email.upcase))
-        second_user.should_not be_valid
+            authenticated_user.should == @user
+        end
     end
 end

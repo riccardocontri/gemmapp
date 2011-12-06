@@ -45,10 +45,14 @@ class User < ActiveRecord::Base
 
     before_save :encrypt_password
 
+    def self.authenticate(email, password)
+        user = find_by_email(email)
+        return nil if user.nil?
+        return user if user.has_password?(password)
+    end
+
     # Checks if the submitted password matches the stored password.
     def has_password?(submitted_password)
-        puts "encrypted_password: #{encrypted_password}"
-        puts "submitted_password: #{submitted_password}"
         encrypted_password == encrypt(submitted_password)
     end
 
