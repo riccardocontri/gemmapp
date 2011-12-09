@@ -35,5 +35,9 @@ describe UsersController do
         it "should have heading containing user name" do
             response.should have_selector("h1", :content => @test_user.name)
         end
+
+        it "should have heading containing user image" do
+            response.should have_selector("h1>img", :class => "gravatar")
+        end
     end
 end

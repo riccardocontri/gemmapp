@@ -1,4 +1,7 @@
-<h1><%= @user.name %></h1>
+<h1>
+    <%= gravatar_for @user %>
+    <%= @user.name %>
+</h1>
 <ul>
     <li>Nome: <%= @user.name %></li>
     <li>Cognome: <%= @user.surname %></li>
