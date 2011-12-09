@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     end
 
     def show
-        #TODO @title = ...
         @user = User.find(params[:id])
+        @page_name = @user.name
     end
 end
