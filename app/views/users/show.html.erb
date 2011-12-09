@@ -1,10 +1,15 @@
-<h1>
-    <%= gravatar_for @user %>
-    <%= @user.name %>
-</h1>
-<ul>
-    <li>Nome: <%= @user.name %></li>
-    <li>Cognome: <%= @user.surname %></li>
-    <li>Nickname: <%= @user.nickname %></li>
-    <li>Email: <%= @user.email %>
-</ul>
+<table class="profile" summary="Profile information">
+    <tr>
+        <td class="main">
+            <h1>
+                <%= gravatar_for @user %>
+                <%= @user.name %>
+            </h1>
+        </td>
+        <td class="sidebar round">
+            Nome: <strong><%= @user.name %></strong><br/>
+            Cognome: <strong><%= @user.surname %></strong><br/>
+            Nickname: <strong><%= @user.nickname %></strong><br/>
+            URL:  <%= link_to user_path(@user), @user %>
+        <td/>
+</table>
