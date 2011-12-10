@@ -5,6 +5,6 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
-        @page_name = @user.name
+        @page_name = @user.short_name
     end
 end

@@ -28,12 +28,12 @@ describe UsersController do
             response.should be_success
         end
 
-        it "should have title containing user name" do
-            response.should have_selector("title", :content => @test_user.name)
+        it "should have title containing short user name" do
+            response.should have_selector("title", :content => @test_user.short_name)
         end
 
-        it "should have heading containing user name" do
-            response.should have_selector("h1", :content => @test_user.name)
+        it "should have heading containing full user name" do
+            response.should have_selector("h1", :content => @test_user.full_name)
         end
 
         it "should have heading containing user image" do

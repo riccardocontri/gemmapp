@@ -56,6 +56,16 @@ class User < ActiveRecord::Base
         encrypted_password == encrypt(submitted_password)
     end
 
+    def full_name
+        return "#{nickname} (#{personal_name})" unless nickname.blank?
+        personal_name
+    end
+
+    def short_name
+        return nickname unless nickname.blank?
+        personal_name
+    end
+
     private
         def encrypt_password
             self.salt = make_salt unless has_password?(password)
@@ -72,5 +82,9 @@ class User < ActiveRecord::Base
 
         def secure_hash(text)
             Digest::SHA2.hexdigest(text)
+        end
+
+        def personal_name
+            name + ((surname.blank?) ? "" : " #{surname}")
         end
 end

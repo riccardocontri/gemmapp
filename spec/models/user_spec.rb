@@ -24,9 +24,9 @@ describe User do
     before(:each) do
         valid_user_attrs =
         {
-            :name => "user name",
-            :surname => "user surname",
-            :nickname => "user nickname",
+            :name => "User name",
+            :surname => "User surname",
+            :nickname => "User nickname",
             :email => "username@domain.com",
             :password => @valid_password,
             :password_confirmation => @valid_password
@@ -227,6 +227,45 @@ describe User do
             authenticated_user = User.authenticate(@user.email, @user.password)
 
             authenticated_user.should == @user
+        end
+    end
+
+    describe "short name" do
+        it "should be the nickname if not blank" do
+            user = User.new(@user_attrs)
+            user.short_name.should == user.nickname
+        end
+
+        it "should be name + surname if nickname is blank but surname isn't" do
+            user = User.new(@user_attrs.merge(:nickname => ""))
+            user.short_name.should == "#{user.name} #{user.surname}"
+        end
+
+        it "should be the name if both nickname and surname are blank" do
+            user = User.new(@user_attrs.merge(:nickname => "", :surname => ""))
+            user.short_name.should == user.name
+        end
+    end
+
+    describe "full name" do
+        it "should be the nickname followed by name and surname in parenthesis if none of them is blank" do
+            user = User.new(@user_attrs)
+            user.full_name.should == "#{user.nickname} (#{user.name} #{user.surname})"
+        end
+
+        it "should be the nickname followed by name in parenthesis if only surname is blank" do
+            user = User.new(@user_attrs.merge(:surname => ""))
+            user.full_name.should == "#{user.nickname} (#{user.name})"
+        end
+
+        it "should be name + surname if nickname is blank but surname isn't" do
+            user = User.new(@user_attrs.merge(:nickname => ""))
+            user.full_name.should == "#{user.name} #{user.surname}"
+        end
+
+        it "should be the name if both nickname and surname are blank" do
+            user = User.new(@user_attrs.merge(:nickname => "", :surname => ""))
+            user.full_name.should == user.name
         end
     end
 end
