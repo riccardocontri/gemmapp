@@ -15,6 +15,21 @@ describe UsersController do
         it "should have title containing 'Join'" do
             response.should have_selector("title", :content => "Join")
         end
+
+        it "should have the user name fields" do
+            response.should have_selector("input[name='user[name]'][type='text']")
+            response.should have_selector("input[name='user[surname]'][type='text']")
+            response.should have_selector("input[name='user[nickname]'][type='text']")
+        end
+
+        it "should have the 'Email' field" do
+            response.should have_selector("input[name='user[email]'][type='text']")
+        end
+
+        it "should have the password fields" do
+            response.should have_selector("input[name='user[password]'][type='password']")
+            response.should have_selector("input[name='user[password_confirmation]'][type='password']")
+        end
     end
 
     describe "Submit new user" do
