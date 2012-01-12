@@ -39,7 +39,16 @@ describe "LayoutLinks" do
   describe "GET 'join'" do
     it "Should open the New user page" do
       get "/join"
+      response.should render_template("users/new")
       response.should have_selector("title", :content => "Join")
+    end
+  end
+
+  pending "GET 'signin'" do
+    it "Should open the new session page" do
+      get "/signin"
+      response.should render_template("sessions/new")
+      response.should have_selector("title", :content => "Sign In") #TODO ??? Già in session_controllers_spec
     end
   end
 
