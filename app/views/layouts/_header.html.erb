@@ -2,7 +2,13 @@
     <%= link_to logo, root_path %>
     <nav class="round">
         <ul>
-            <li><%= link_to "Home", root_path %></li>
+            <li><%= link_to "Home", root_path, :id => "home_link" %></li>
+            <% if current_user.nil? %>
+                <li><%= link_to "Entra", signin_path, :id => "signin_link" %></li>
+            <% else %>
+                <li><%= link_to current_user.short_name, user_path(current_user), :id => "profile_link" %></li>
+                <li><%= link_to "Esci", signout_path, :id => "signout_link" %></li>
+            <% end %>
         </ul>
     </nav>
 </header>
