@@ -89,6 +89,12 @@ describe UsersController do
                 post :create, :user => @valid_attrs
                 response.should_not have_selector("div", :id => "error_explanation")
             end
+
+            it "should sign the new user in" do
+                post :create, :user => @valid_attrs
+                new_user = User.find_by_email(@valid_attrs[:email])
+                controller.current_user.should == new_user
+            end
         end
     end
 
